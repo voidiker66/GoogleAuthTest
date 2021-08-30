@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="google-signin-client_id" content="645618720218-oonodfmddfsv29je825ur3h8eodu4de5.apps.googleusercontent.com">
+    </head>
+    <body>
+        {% block body %}
+
+        <div id="g-signin2"></div>
+        <script>
+            function onSuccess(googleUser) {
+                // If a user successfully uses the Google sign in button to sign into their account
+                var profile = googleUser.getBasicProfile();
+                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                console.log('Name: ' + profile.getName());
+                console.log('Image URL: ' + profile.getImageUrl());
+                console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+                var idToken = googleUser.getAuthResponse().id_token;
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/authHandler');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.onload = function() {
+                    // Here we should handle the response from the server
+                    // Right now we just display the user data
+                    console.log('Signed in as: ' + xhr.responseText);
+                    var data = JSON.parse(xhr.response).data;
+
+                    for (var line in data) {
+                        var elem = document.createElement('div');
+                        elem.innerHTML = line + ': ' + data[line];
+                        document.body.appendChild(elem);
+                        console.log(line + ': ' + data[line]);
+                    }
+                };
+                xhr.send('idToken=' + idToken);
+            }
+
+            function onFailure(error) {
+                // If a user fails to sign in for any reason, including closing the popup
+                console.log(error);
+            }
+
+            function renderButton() {
+                //BEGIN CHECK IF USER IS NOT SIGNED IN
+                gapi.load('auth2', async () => {
+                    auth2 = await window.gapi.auth2.init({
+                    });
+                    var authInstance = await window.gapi.auth2.getAuthInstance();
+                    var signedIn = authInstance.isSignedIn.get();
+                    if (signedIn) {
+                        // We want to sign out user so we always sign in on this page
+                        console.log("USER IS SIGNED IN");
+                        auth2.signOut();
+                    }
+                    // Now that we have signed out the user, we can render the sign in option
+                    gapi.signin2.render('g-signin2', {
+                        'scope': 'profile email',
+                        'width': 240,
+                        'height': 50,
+                        'longtitle': true,
+                        'theme': 'dark',
+                        'onsuccess': onSuccess,
+                        'onfailure': onFailure
+                    });
+                });
+            }
+
+        </script>
+        <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+        {% endblock %}
+    </body>
+</html>

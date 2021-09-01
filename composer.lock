@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70824712cc6330975918f9f49d14079e",
+    "content-hash": "b84328c1456f2f037cb0da87bf5f4776",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -3148,16 +3148,16 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v5.3.4",
+            "version": "v5.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "944db6004fc374fbe032d18e07cce51cc4e1e661"
+                "reference": "864867b13bd67347497ce956f4b253f8fe18b80c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/944db6004fc374fbe032d18e07cce51cc4e1e661",
-                "reference": "944db6004fc374fbe032d18e07cce51cc4e1e661",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/864867b13bd67347497ce956f4b253f8fe18b80c",
+                "reference": "864867b13bd67347497ce956f4b253f8fe18b80c",
                 "shasum": ""
             },
             "require": {
@@ -3166,6 +3166,7 @@
                 "psr/log": "^1.1|^2|^3",
                 "symfony/cache-contracts": "^1.1.7|^2",
                 "symfony/deprecation-contracts": "^2.1",
+                "symfony/polyfill-php73": "^1.9",
                 "symfony/polyfill-php80": "^1.16",
                 "symfony/service-contracts": "^1.1|^2",
                 "symfony/var-exporter": "^4.4|^5.0"
@@ -3224,7 +3225,7 @@
                 "psr6"
             ],
             "support": {
-                "source": "https://github.com/symfony/cache/tree/v5.3.4"
+                "source": "https://github.com/symfony/cache/tree/v5.3.7"
             },
             "funding": [
                 {
@@ -3240,7 +3241,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-23T15:55:36+00:00"
+            "time": "2021-08-29T15:08:21+00:00"
         },
         {
             "name": "symfony/cache-contracts",

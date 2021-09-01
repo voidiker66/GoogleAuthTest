@@ -22,3 +22,4 @@ Once the user has signed in, the identity token is sent to the server, where the
 
 Once the identity token is verified, the server has access to the Google Account details (Account ID, Email Address, Account Name).
 
+The validated user account is stored in cache so we can access the Account ID and Email Address anywhere on the local server.

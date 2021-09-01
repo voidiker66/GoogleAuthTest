@@ -12,6 +12,7 @@ use Google\Client as GoogleClient;
 
 class DefaultController extends AbstractController
 {
+
  	/**
      * @Route("/", name="app_dashboard")
      */
@@ -54,19 +55,16 @@ class DefaultController extends AbstractController
                 For example, we could store the information in cache so we can retrieve the information anywhere on the local server
             */
 
-            // Store the current user in cache
-            $cache = new FilesystemAdapter();
-            $currentUser = $cache->getItem('app.current_user');
+            $return = null;
 
-            // If the email was found, store the current user email
+            // If the email was found, store the current user data to cache
             if (isset($userEmail)) {
-                $currentUser->set(['user_id' => $userid, 'user_email' => $userEmail]);
-                $cache->save($currentUser);
+                $return = $this->saveItemToCache('app.current_user', ['user_id' => $userid, 'user_email' => $userEmail]);
             }
 
 
             // Get the new current user saved to cache
-            $currentUser = $cache->getItem('app.current_user');
+            $currentUser = $this->getItemFromCache('app.current_user');
 
             // Verify the current user exists
             if (! $currentUser->isHit()) {
@@ -83,7 +81,8 @@ class DefaultController extends AbstractController
             return new JsonResponse([
                 'status' => 'ok',
                 'current_user' => $currentUser->get(),
-                'data' => $payload
+                'data' => $payload,
+                'return' => $return
             ]);
         } else {
             // Invalid ID token
@@ -93,6 +92,28 @@ class DefaultController extends AbstractController
           ]);
         }
 
+    }
+
+    private function getItemFromCache($item)
+    {
+        $cache = new FilesystemAdapter();
+        $itemInCache = $cache->getItem($item);
+        if ($itemInCache->isHit()) {
+            return $itemInCache;
+        }
+        return null;
+    }
+
+    private function saveItemToCache($item, $value, $force=true)
+    {
+        $cache = new FilesystemAdapter();
+        $itemInCache = $cache->getItem($item);
+        if (!$itemInCache->isHit() || $force) {
+            $itemInCache->set($value);
+            $cache->save($itemInCache);
+            return true;
+        }
+        return false;
     }
 
 

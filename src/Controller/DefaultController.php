@@ -59,7 +59,7 @@ class DefaultController extends AbstractController
 
             // If the email was found, store the current user data to cache
             if (isset($userEmail)) {
-                $return = $this->saveItemToCache('app.current_user', ['user_id' => $userid, 'user_email' => $userEmail]);
+                $this->saveItemToCache('app.current_user', ['user_id' => $userid, 'user_email' => $userEmail]);
             }
 
 
@@ -81,8 +81,7 @@ class DefaultController extends AbstractController
             return new JsonResponse([
                 'status' => 'ok',
                 'current_user' => $currentUser->get(),
-                'data' => $payload,
-                'return' => $return
+                'data' => $payload
             ]);
         } else {
             // Invalid ID token

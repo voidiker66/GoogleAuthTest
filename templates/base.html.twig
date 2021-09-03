@@ -27,8 +27,23 @@
                     // Here we should handle the response from the server
                     // Right now we just display the user data
                     console.log('Signed in as: ' + xhr.responseText);
-                    var data = JSON.parse(xhr.response).data;
+                    var response = JSON.parse(xhr.response);
 
+                    var header = document.createElement('h1');
+                    header.innerHTML = 'Google Auth Data';
+                    document.body.appendChild(header);
+                    var data = response.data;
+                    for (var line in data) {
+                        var elem = document.createElement('div');
+                        elem.innerHTML = line + ': ' + data[line];
+                        document.body.appendChild(elem);
+                        console.log(line + ': ' + data[line]);
+                    }
+
+                    var header = document.createElement('h1');
+                    header.innerHTML = 'Cached User Data';
+                    document.body.appendChild(header);
+                    var data = response.current_user;
                     for (var line in data) {
                         var elem = document.createElement('div');
                         elem.innerHTML = line + ': ' + data[line];
